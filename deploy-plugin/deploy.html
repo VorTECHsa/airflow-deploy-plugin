@@ -1,0 +1,64 @@
+{% extends "airflow/master.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+<h2>{{ title }}</h2>
+
+<h3>DAGs deployed</h3>
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Git hash</th>
+        <td>{{ data['sha'] }}</td>
+    </tr>
+    <tr>
+        <th>Commit message</th>
+        <td>{{ data['commit_message'] }}</td>
+    </tr>
+    <tr>
+        <th>Author</th>
+        <td>{{ data['author'] }}</td>
+    </tr>
+    <tr>
+        <th>Committed</th>
+        <td>{{ data['committed_date'] }}</td>
+    </tr>
+    <tr>
+        <th>Active branch</th>
+        <td>{{ data['active_branch'] }}</td>
+    </tr>
+    <tr>
+        <th>Local branches</th>
+        <td>
+            {% for brn in data['local_branches'] %}
+            {{ brn }} <br/>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th>Remotes</th>
+        <td>
+            {% for repo, url in data['remotes'] %}
+            {{ repo }} - {{ url }} <br/>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+
+<h3>Deploy branch</h3>
+
+<div style="float: left" class="form-inline">
+    <form method="post" action="{{ url_for('DeploymentView.deploy') }}" style="float:left;">
+        Git branches: {{ form.git_branches(class_="form-control") }}
+        <input class="btn btn-primary" type="submit" value="Deploy"/>
+        {% if csrf_token %}
+        <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
