@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import git
@@ -13,7 +14,7 @@ from wtforms.fields import SelectField
 
 class DeploymentView(BaseView):
     plugins_folder = conf.get("core", "plugins_folder")
-    template_folder = f"{plugins_folder}/deploy"
+    template_folder = os.path.join(plugins_folder, "deploy-plugin")
     repo = git.Repo(conf.get("core", "dags_folder"))
     route_base = "/deployment"
 
