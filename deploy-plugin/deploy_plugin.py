@@ -56,7 +56,6 @@ class DeploymentView(BaseView):
 
         form = GitBranchForm()
         form.git_branches.choices = [(brn, brn) for brn in remote_branches]
-        form.git_branches.default = "origin/master"
 
         return self.render_template("deploy.html", title=title, form=form, data=data)
 
@@ -94,4 +93,4 @@ class AirflowDeploymentPlugin(AirflowPlugin):
 
 
 class GitBranchForm(FlaskForm):
-    git_branches = SelectField("Git branch")
+    git_branches = SelectField("Git branch", default="origin/master")
